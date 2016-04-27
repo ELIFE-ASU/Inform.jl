@@ -1,3 +1,14 @@
+# active information functions load correctly
+@test Inform._active_info_found
+@test Inform._active_info != C_NULL
+@test isa(Inform._active_info, Ptr{Void})
+
+@test Inform._active_info_ensemble_found
+@test Inform._active_info_ensemble != C_NULL
+@test isa(Inform._active_info_ensemble, Ptr{Void})
+
+## Individual time series
+
 # series too short
 @test isnan(activeinfo([],2))
 @test isnan(activeinfo([1],2))
@@ -26,3 +37,27 @@ end
 @test_approx_eq_eps activeinfo([2,2,3,3,3,3,2,1,0], 2, b=4) 1.270942 1e-6
 @test_approx_eq_eps activeinfo([2,2,2,2,2,2,1,1,1], 2, b=4) 0.469565 1e-6
 
+## Ensemble time series
+let series = [ 1 0; 1 0; 0 0; 0 1; 1 0; 0 0; 0 0; 1 1]
+    @test_approx_eq_eps activeinfo(series, 2) 0.459148 1e-6
+end
+let series = [
+    1 0 1 1 0 0 1 0 0;
+    0 0 0 0 0 0 1 0 0;
+    0 1 0 0 0 0 1 0 0;
+    0 1 0 0 0 0 0 1 0;
+    0 1 0 0 0 1 0 1 0;
+    0 1 0 0 1 1 0 1 0;
+    0 0 0 0 1 0 0 1 1;
+    0 0 1 1 0 0 1 0 1;
+    0 0 1 1 0 0 1 0 0]
+    @test_approx_eq_eps activeinfo(series, 2) 0.308047 1e-6
+end
+
+let series = [
+    3 3 3 2 1 0 0 0 1;
+    2 2 3 3 3 3 2 1 0;
+    0 0 0 0 1 1 0 0 0;
+    1 1 0 0 0 1 1 2 2]'
+    @test_approx_eq_eps activeinfo(series, 2) 1.324291 1e-6
+end
