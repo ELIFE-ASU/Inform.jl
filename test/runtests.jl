@@ -1,5 +1,6 @@
 using Inform
 using Base.Test
 
-# write your own tests here
-@test 1 == 1
+@test Inform._libinform_found
+@test Inform._libinform != C_NULL
+@test isa(Inform._libinform, Ptr{Void})

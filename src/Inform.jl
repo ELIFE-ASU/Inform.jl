@@ -1,5 +1,5 @@
 module Inform
 
-# package code goes here
+include("deps.jl")
 
-end # module
+end
