@@ -16,5 +16,23 @@ macro checked_lib(libname, path)
     end
 end
 
+macro load_symbol(symname, sym, libname)
+    const symptr = if VERSION >= v"0.4.0-dev+3844"
+        Base.Libdl.dlsym_e(eval(libname), eval(sym))
+    else
+        Base.dlsym_e(eval(libname), eval(sym))
+    end
+
+    found = symptr != C_NULL
+    if !found
+        error("Unable to load $sym ($libname)\n")
+    end
+
+    quote
+        const $(esc(symbol(symname,"_found"))) = $found
+        const $(esc(symname)) = $symptr
+    end
+end
+
 @checked_lib _libinform "libinform"
 
