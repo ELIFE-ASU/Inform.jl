@@ -6,3 +6,4 @@ using Base.Test
 @test isa(Inform._libinform, Ptr{Void})
 
 include("activeinfo.jl")
+include("transferentropy.jl")

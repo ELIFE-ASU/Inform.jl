@@ -1,8 +1,9 @@
 module Inform
 
-export activeinfo
+export activeinfo, transferentropy
 
 include("deps.jl")
 include("activeinfo.jl")
+include("transferentropy.jl")
 
 end
